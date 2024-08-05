@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page SPA</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .hidden { display: none; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; width: 100%; padding: 15px 20px; z-index: 10; background-color: white; font-family: 'Arial', sans-serif; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+        .nav-left, .nav-center, .nav-right { display: flex; align-items: center; }
+        .nav-left { flex: 1; font-size: 0.875rem; color: #333; }
+        .nav-center { flex: 2; justify-content: center; }
+        .nav-right { flex: 1; justify-content: flex-end; }
+        .nav-link { margin: 0 15px; color: #333; font-weight: 600; font-size: 1rem; transition: color 0.3s ease; }
+        .nav-link:hover { color: #007bff; }
+        .hero-image { width: 100%; height: 600px; object-fit: cover; position: relative; }
+        .hero-text { position: absolute; bottom: 60px; left: 50px; color: white; z-index: 1; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6); }
+        .hero-text h1 { font-size: 4.5rem; font-weight: bold; }
+        .hero-text p { font-size: 1.25rem; }
+        .content-section { padding: 80px 20px; }
+        .content-section h2 { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 700; margin-bottom: 20px; line-height: 1.2; }
+        .content-section p { font-family: 'Roboto', sans-serif; max-width: 800px; font-size: 1.25rem; line-height: 1.6; }
+        .content-top { text-align: left; margin-bottom: 80px; }
+        .content-bottom, .content-middle, .content-extra { display: flex; align-items: center; margin-top: 80px; }
+        .content-left, .content-right { flex: 1; padding: 0 20px; }
+        .content-left { text-align: left; }
+        .content-right { text-align: right; }
+        .content-center { max-width: 600px; padding: 20px; }
+        .button { display: inline-block; padding: 12px 30px; border: 2px solid black; text-decoration: none; transition: background 0.3s ease; margin-top: 20px; }
+        .button:hover { background: black; color: white; }
+        .content-image { width: 100%; height: auto; }
+        .content-image-2 { max-height: 400px; width: 100%; object-fit: cover; }
+        .footer { background-color: #1c1c1c; padding: 60px 0 40px 0; color: #f0f0f0; }
+        .footer-container { display: flex; justify-content: center; text-align: center; gap: 80px; max-width: 1200px; margin: 0 auto; }
+        .footer-column { flex: 1; padding: 0 20px; }
+        .footer-column h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 15px; }
+        .footer-column p, .footer-column a { font-size: 0.875rem; line-height: 1.6; color: #f0f0f0; text-decoration: none; }
+        .footer-column a:hover { text-decoration: underline; color: #f0f0f0; }
+        .social-links a { margin-right: 10px; font-size: 1.25rem; color: #f0f0f0; }
+        .footer-bottom { text-align: center; padding: 20px 0 0 0; border-top: 1px solid #333; font-size: 0.875rem; }
+
+        /* General About Section Styles */
+        #about .content-section {
+            padding: 80px 20px;
+        }
+
+        #about .about-intro p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.25rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            margin: 0 auto; /* Untuk memusatkan paragraf */
+            max-width: 800px; /* Atau sesuai kebutuhan untuk lebar maksimal */
+            text-align: center; /* Pastikan ini ada untuk menengah */
+        }
+
+
+        #about .content-top,
+        #about .content-middle,
+        #about .content-bottom {
+            display: flex;
+            align-items: center;
+            margin-top: 80px;
+        }
+
+        #about .content-left,
+        #about .content-right {
+            flex: 1;
+            padding: 0 20px;
+        }
+
+        #about .content-left {
+            text-align: left;
+        }
+
+        #about .content-right {
+            text-align: right;
+        }
+
+        #about .content-image {
+            width: 100%;
+            height: auto;
+        }
+
+        #about .content-image-2 {
+            max-height: 400px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .product-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .product-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-card .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .product-card:hover .overlay {
+            opacity: 1;
+        }
+
+        .overlay span {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* product * /
+        /* Tambahkan class text-center pada label untuk menjadikan teks di tengah */
+        label[for="file-upload"] {
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Tambahkan margin auto pada tombol untuk menempatkannya di tengah */
+        .upload-button {
+          display: block; padding: 12px 30px; border: 2px solid black; text-decoration: none; transition: background 0.3s ease; margin: 20px auto;
+        }
+
+        .upload-button:hover {
+            background: black;
+            color: white;
+        }
+
+
+    </style>
+
+</head>
+<body class="font-sans bg-gray-100">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <span>1234 Street Name, City, Country</span>
+        </div>
+        <div class="nav-center">
+            <a href="#" class="nav-link" data-target="home">Home</a>
+            <a href="#" class="nav-link" data-target="about">About</a>
+            <a href="#" class="nav-link" data-target="product">Product</a>
+        </div>
+        <div class="nav-right">
+            <div class="text-xl font-bold">Bondoo.</div>
+        </div>
+    </nav>
+
+    <!-- Hero home/about/product  -->
+    <!-- Hero Image for Home Page -->
+    <div class="relative" id="hero-home">
+        <img src="img/heroImg.webp" alt="Hero Image" class="hero-image">
+        <div class="hero-text">
+            <h1>Welcome to Bondoo.</h1>
+            <p>Experience the harmony of modern luxury and natural beauty.</p>
+        </div>
+    </div>
+    <!-- Hero Image for About Page -->
+    <div class="relative" id="hero-about">
+        <img src="img/heroImg2.webp" alt="About Hero Image" class="hero-image">
+        <div class="hero-text">
+            <h1>About Bondoo.</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipi</p>
+        </div>
+    </div>
+    <!-- end hero -->
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Home Page -->
+        <section id="home" class="content-section">
+            <div class="content-top">
+                <div class="content-left">
+                    <h2>DESIGN, ENERGY, EXPERIENCE.</h2>
+                    <p>At Bondoo, we offer a unique blend of cutting-edge design and unparalleled comfort. Our spaces are thoughtfully curated to provide a serene and immersive experience, allowing guests to reconnect with nature and rejuvenate their senses.</p>
+                    <a href="#" class="button">CHECK AVAILABILITY</a>
+                </div>
+                <div class="content-right mt-10">
+                    <img src="img/contentHome2.webp" alt="Content Image" class="content-image-2">
+                </div>
+            </div>
+            <div class="content-middle">
+                <div class="content-left">
+                    <h2>Unique Architectural Design.</h2>
+                    <p>Our properties feature modern architecture that blends seamlessly with the natural surroundings, offering both aesthetic pleasure and functionality. Experience spaces that inspire creativity and relaxation.</p>
+                    <a href="#" class="button">EXPLORE ARCHITECTURE</a>
+                </div>
+                <div class="content-right mt-10">
+                    <img src="img/contentHome3.webp" alt="Content Image" class="content-image-2">
+                </div>
+            </div>
+            <div class="content-bottom">
+                <div class="content-left">
+                    <img src="img/contentHome.webp" alt="Content Image" class="content-image">
+                </div>
+                <div class="content-right">
+                    <h2>Reground, recharge & renew.</h2>
+                    <p>Expansion through design, energy, and experience. Bondoo is a new international class of exclusive stays welcoming guests to play, create, and bond together.</p>
+                    <a href="#" class="button">CHECK AVAILABILITY</a>
+                </div>
+            </div>
+            <div class="content-extra">
+                <div class="content-left">
+                    <h2>Luxury and Comfort.</h2>
+                    <p>Enjoy the highest level of luxury and comfort in our specially designed rooms, equipped with all the modern amenities. Whether you are here for relaxation or adventure, Bondoo has everything you need for a perfect stay.</p>
+                    <a href="#" class="button">VIEW ROOMS</a>
+                </div>
+                <div class="content-right mt-10">
+                    <img src="img/contentHome4.webp" alt="Content Image" class="content-image-2">
+                </div>
+            </div>
+            <div class="content-extra">
+                <div class="content-center mx-auto text-center">
+                    <h2>Exclusive Amenities.</h2>
+                    <p>Bondoo offers an array of exclusive amenities designed to provide the utmost in comfort and convenience. From a state-of-the-art fitness center to private pool access, we ensure that every aspect of your stay is catered to with the highest standards.</p>
+                    <a href="#" class="button mx-auto mt-4">DISCOVER AMENITIES</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Content Section -->
+        <section id="about" class="content-section">
+            <div class="about-content">
+              <div class="about-intro text-center mb-12">
+                  <h2>Design, Energy, Experience.</h2>
+                  <p>At Bondoo, we believe in creating spaces that merge modern luxury with natural beauty. Our philosophy centers on providing guests with a serene environment that fosters creativity and relaxation.</p>
+                  <a href="#" class="button">LEARN MORE</a>
+              </div>
+                <div class="content-top">
+                    <div class="content-left">
+                        <h2>Living Rooms</h2>
+                        <p>Our living rooms offer a blend of elegance and comfort, perfect for relaxation or gatherings. Each space is designed to provide a warm and inviting atmosphere.</p>
+                        <a href="#" class="button">VIEW ROOMS</a>
+                    </div>
+                    <div class="content-right mt-10">
+                        <img src="img/contentAbout.webp" alt="Living Rooms Image" class="content-image-2">
+                    </div>
+                </div>
+                <div class="content-middle">
+                    <div class="content-right mt-10">
+                        <img src="img/contentAbout2.webp" alt="Kitchen Image" class="content-image-2">
+                    </div>
+                    <div class="content-left">
+                        <h2>The Kitchen</h2>
+                        <p>Modern, fully-equipped kitchens for the culinary enthusiasts. Enjoy cooking in a space that blends functionality with aesthetic appeal.</p>
+                        <a href="#" class="button">EXPLORE KITCHEN</a>
+                    </div>
+                </div>
+                <div class="content-bottom">
+                    <div class="content-left">
+                        <h2>Bedrooms</h2>
+                        <p>Luxurious and comfortable bedrooms designed for ultimate relaxation. Enjoy the finest linens and elegant décor in a serene setting.</p>
+                        <a href="#" class="button">DISCOVER BEDROOMS</a>
+                    </div>
+                    <div class="content-left">
+                        <img src="img/contentAbout3.webp" alt="Bedrooms Image" class="content-image">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Product Page -->
+        <section id="product" class="content-section">
+            <h2 class="text-3xl font-bold mb-12 text-center">Our Products</h2> <!-- Menambahkan jarak dengan mb-12 -->
+
+            <div class="product-gallery">
+                <!-- Contoh kartu produk -->
+                <div class="product-card">
+                    <img src="img/split_image_1.webp" alt="Product 1">
+                    <div class="overlay">
+                        <span>View</span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="img/split_image_2.webp" alt="Product 2">
+                    <div class="overlay">
+                        <span>View</span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="img/split_image_3.webp" alt="Product 3">
+                    <div class="overlay">
+                        <span>View</span>
+                    </div>
+                </div>
+                <!-- line 2 -->
+                <div class="product-card">
+                    <img src="img/split_image_4.webp" alt="Product 1">
+                    <div class="overlay">
+                        <span>View</span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="img/split_image_5.webp" alt="Product 2">
+                    <div class="overlay">
+                        <span>View</span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="img/split_image_6.webp" alt="Product 3">
+                    <div class="overlay">
+                        <span>View</span>
+                    </div>
+                </div>
+                <!-- line 3 -->
+                <div class="product-card">
+                    <img src="img/contentAbout.webp" alt="Product 1">
+                    <div class="overlay">
+                        <span>View</span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="img/contentAbout2.webp" alt="Product 2">
+                    <div class="overlay">
+                        <span>View</span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="img/contentAbout3.webp" alt="Product 3">
+                    <div class="overlay">
+                        <span>View</span>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Form untuk mengunggah gambar baru -->
+            <form id="upload-form" class="mt-12 max-w-md mx-auto">
+                <label for="file-upload" class="block text-sm font-medium text-gray-700 text-center">Upload New Product Image</label>
+                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                    <div class="space-y-1 text-center">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                            <path d="M28 8h14a2 2 0 012 2v28a2 2 0 01-2 2H6a2 2 0 01-2-2V10a2 2 0 012-2h14m4-2v16m0-16L16 16m8-8l8 8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <div class="flex text-sm text-gray-600">
+                            <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                <span>Upload a file</span>
+                                <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                            </label>
+                            <p class="pl-1">or drag and drop</p>
+                        </div>
+                        <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                    </div>
+                </div>
+                <button type="submit" class="upload-button">Add Image</button>
+            </form>
+        </section>
+
+
+        <!-- Footer -->
+        <footer id="footer" class="footer mt-8 hidden">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <p>500 Terry Francine Street,<br> San Francisco, CA 94158</p>
+                    <p>Email: <a href="mailto:info@mysite.com" style="color: #007bff;">info@mysite.com</a></p>
+                    <p>Tel: <a href="tel:123-456-7890" style="color: #007bff;">123-456-7890</a></p>
+                </div>
+                <div class="footer-column">
+                    <h3>Menu</h3>
+                    <a href="#" class="nav-link" data-target="home">Home</a><br>
+                    <a href="#" class="nav-link" data-target="about">About</a><br>
+                    <a href="#" class="nav-link" data-target="product">Product</a><br>
+                </div>
+                <div class="footer-column">
+                    <h3>Socials</h3>
+                    <div class="social-links">
+                        <a href="#" class="mr-2"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="mr-2"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="mr-2"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#"><i class="fab fa-linkedin fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="map-container pt-10 pb-20">
+                <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                    <h3 style="color: white; font-size: 1.75rem; font-weight: bold;">Our Location</h3>
+                    <p style="color: #ccc; margin-bottom: 20px;">Find us at the heart of San Francisco.</p>
+                    <div style="overflow: hidden; border-radius: 12px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.8354345093686!2d-122.42129268531798!3d37.77492927975845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085808b6b2bb8c1%3A0x1fbd2c7a57f59b7e!2s500%20Terry%20Francine%20St%2C%20San%20Francisco%2C%20CA%2094158!5e0!3m2!1sen!2sus!4v1647396187323!5m2!1sen!2sus"
+                            width="100%" height="300" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom mt-6">
+                &copy; 2024 Bondoo. All rights reserved.
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+  $(document).ready(function() {
+    // Menangani klik tautan navigasi
+    $('.nav-link').click(function(e) {
+      e.preventDefault();
+      var target = $(this).data('target');
+      $('section').addClass('hidden');
+      $('#' + target).removeClass('hidden');
+
+      // Sembunyikan semua hero dan footer
+      $('.relative').hide();
+      $('#footer').hide();
+
+      // Tampilkan hero sesuai dengan halaman yang dipilih
+      if (target === 'home') {
+        $('#hero-home').show();
+      } else if (target === 'about') {
+        $('#hero-about').show();
+      } else if (target === 'product') {
+        $('#footer').show(); // Tampilkan footer hanya untuk halaman produk
+      }
+
+      // Memperbarui URL tanpa memuat ulang halaman
+      history.pushState(null, null, '#' + target);
+    });
+
+    // Menangani navigasi kembali/maju
+    $(window).on('popstate', function() {
+      var hash = location.hash.substring(1);
+      $('section').addClass('hidden');
+      $('#' + hash).removeClass('hidden');
+
+      // Sembunyikan semua hero dan footer
+      $('.relative').hide();
+      $('#footer').hide();
+
+      // Tampilkan hero sesuai dengan halaman yang dipilih
+      if (hash === 'home') {
+        $('#hero-home').show();
+      } else if (hash === 'about') {
+        $('#hero-about').show();
+      } else if (hash === 'product') {
+        $('#footer').show(); // Tampilkan footer hanya untuk halaman produk
+      }
+    });
+
+    // Menangani perubahan posisi scroll
+    $(window).scroll(function() {
+      if ($(window).scrollTop() > 50) {
+        $('.navbar').addClass('transparent');
+      } else {
+        $('.navbar').removeClass('transparent');
+      }
+    });
+
+    // Menginisialisasi tampilan awal berdasarkan URL
+    var initialHash = location.hash.substring(1) || 'home';
+    $('section').addClass('hidden');
+    $('#' + initialHash).removeClass('hidden');
+
+    // Sembunyikan semua hero dan footer
+    $('.relative').hide();
+    $('#footer').hide();
+
+    // Tampilkan hero sesuai dengan halaman awal
+    if (initialHash === 'home') {
+      $('#hero-home').show();
+    } else if (initialHash === 'about') {
+      $('#hero-about').show();
+    } else if (initialHash === 'product') {
+      $('#footer').show(); // Tampilkan footer hanya untuk halaman produk
+    }
+  });
+</script>
+
+</body>
+</html>
